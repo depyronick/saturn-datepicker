@@ -244,11 +244,16 @@ export class SatDatepickerContent<D> extends _SatDatepickerContentMixinBase
 				break;
 		}
 
-		this._calendar.activeDate = this._calendar.beginDate;
-		this._calendar.beginDateSelectedChange.emit(this._calendar.beginDate);
-		this._calendar.dateRangesChange.emit({ begin: this._calendar.beginDate, end: this._calendar.endDate });
+		if (this._calendar.beginDate && this._calendar.endDate) {
+			const dates: SatDatepickerRangeValue<D> = {
+				begin: this.dateAdapter.deserialize(this._calendar.beginDate),
+				end: this.dateAdapter.deserialize(this._calendar.endDate)
+			};
 
-		this.datepicker.close();
+			this.datepicker._selectedChanged.next(dates);
+
+			this.datepicker.close();
+		}
 	}
 }
 
@@ -289,6 +294,11 @@ export class SatDatepicker<D> implements OnDestroy, CanColor {
 	}
 	set timeMode(mode: boolean) {
 		this._timeMode = mode;
+		if (this.rangeMode) {
+			this._validSelected = null;
+		} else {
+			this._beginDate = this._endDate = null;
+		}
 	}
 
 	/** */
