@@ -1,89 +1,89 @@
 <div class="container" [ngClass]="{'timeSelection': datepicker.timeMode}">
-  <div class="preset-buttons" *ngIf="datepicker.showPresets">
-    <h3 class="preset-title">Presets</h3>
-    <button mat-button (click)="setPreset('today')">Today</button>
-    <button mat-button (click)="setPreset('yesterday')">Yesterday</button>
-    <button mat-button (click)="setPreset('two_days')">2 days ago</button>
-    <button mat-button (click)="setPreset('three_days')">3 days ago</button>
-    <button mat-button (click)="setPreset('this_week')">This week</button>
-    <button mat-button (click)="setPreset('last_week')">Last week</button>
-    <button mat-button (click)="setPreset('this_month')">This month</button>
-    <button mat-button (click)="setPreset('last_month')">Last month</button>
-  </div>
+	<div class="preset-buttons" *ngIf="datepicker.showPresets">
+		<h3 class="preset-title">Presets</h3>
+		<button mat-button (click)="setPreset('today')">Today</button>
+		<button mat-button (click)="setPreset('yesterday')">Yesterday</button>
+		<button mat-button (click)="setPreset('two_days')">2 days ago</button>
+		<button mat-button (click)="setPreset('three_days')">3 days ago</button>
+		<button mat-button (click)="setPreset('this_week')">This week</button>
+		<button mat-button (click)="setPreset('last_week')">Last week</button>
+		<button mat-button (click)="setPreset('this_month')">This month</button>
+		<button mat-button (click)="setPreset('last_month')">Last month</button>
+	</div>
 
-  <div>
-    <sat-calendar cdkTrapFocus [id]="datepicker.id" [ngClass]="datepicker.panelClass" [startAt]="datepicker.startAt"
-      [startView]="datepicker.startView" [minDate]="datepicker._minDate" [maxDate]="datepicker._maxDate"
-      [dateFilter]="datepicker._dateFilter" [headerComponent]="datepicker.calendarHeaderComponent"
-      [footerComponent]="datepicker.calendarFooterComponent" [selected]="datepicker._selected"
-      [dateClass]="datepicker.dateClass" [@fadeInCalendar]="'enter'" (selectedChange)="datepicker.select($event)"
-      (yearSelected)="datepicker._selectYear($event)" (monthSelected)="datepicker._selectMonth($event)"
-      [beginDate]="datepicker._beginDate" [endDate]="datepicker._endDate" [rangeMode]="datepicker.rangeMode"
-      [timeMode]="datepicker.timeMode" [closeAfterSelection]="datepicker.closeAfterSelection"
-      [orderPeriodLabel]="datepicker.orderPeriodLabel" (dateRangesChange)="datepicker._selectRange($event)"
-      (beginDateSelectedChange)="datepicker.setBeginDateSelected($event)" (_userSelection)="close()">
-    </sat-calendar>
-    <div class="time-wrapper" *ngIf="datepicker.timeMode">
-      <div class="time-row">
-        <div>
-          From
-        </div>
-        <div class="time-row-infix">
-          <span>{{datepicker._beginDate | date}}</span>
-          <div class="select-field-wrapper">
-            <div>
-              <mat-form-field class="select-field" floatLabel="never">
-                <mat-label>Hr</mat-label>
-                <mat-select [(ngModel)]="beginDateHours">
-                  <mat-option [value]="hr" *ngFor="let hr of hours">{{hr}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <div class="double-dot">:</div>
-            <div>
-              <mat-form-field class="select-field" floatLabel="never">
-                <mat-label>Min</mat-label>
-                <mat-select [(ngModel)]="beginDateMinutes">
-                  <mat-option [value]="min" *ngFor="let min of minutes">{{min}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="time-row">
-        <div>
-          To
-        </div>
-        <div class="time-row-infix">
-          <span>{{datepicker._endDate | date}}</span>
-          <div class="select-field-wrapper">
-            <div>
-              <mat-form-field class="select-field" floatLabel="never">
-                <mat-label>Hr</mat-label>
-                <mat-select [(ngModel)]="endDateHours">
-                  <mat-option [value]="hr" *ngFor="let hr of hours">{{hr}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <div class="double-dot">:</div>
-            <div>
-              <mat-form-field class="select-field" floatLabel="never">
-                <mat-label>Min</mat-label>
-                <mat-select [(ngModel)]="endDateMinutes">
-                  <mat-option [value]="min" *ngFor="let min of minutes">{{min}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </div>
-        </div>
-      </div>
+	<div>
+		<sat-calendar cdkTrapFocus [id]="datepicker.id" [ngClass]="datepicker.panelClass" [startAt]="datepicker.startAt"
+			[startView]="datepicker.startView" [minDate]="datepicker._minDate" [maxDate]="datepicker._maxDate"
+			[dateFilter]="datepicker._dateFilter" [headerComponent]="datepicker.calendarHeaderComponent"
+			[footerComponent]="datepicker.calendarFooterComponent" [selected]="datepicker._selected"
+			[dateClass]="datepicker.dateClass" [@fadeInCalendar]="'enter'" (selectedChange)="datepicker.select($event)"
+			(yearSelected)="datepicker._selectYear($event)" (monthSelected)="datepicker._selectMonth($event)"
+			[beginDate]="datepicker._beginDate" [endDate]="datepicker._endDate" [rangeMode]="datepicker.rangeMode"
+			[timeMode]="datepicker.timeMode" [closeAfterSelection]="datepicker.closeAfterSelection"
+			[orderPeriodLabel]="datepicker.orderPeriodLabel" (dateRangesChange)="datepicker._selectRange($event)"
+			(beginDateSelectedChange)="datepicker.setBeginDateSelected($event)" (_userSelection)="close()">
+		</sat-calendar>
+		<div class="time-wrapper" *ngIf="datepicker.timeMode">
+			<div class="time-row">
+				<div>
+					From
+				</div>
+				<div class="time-row-infix">
+					<span>{{datepicker._beginDate | date}}</span>
+					<div class="select-field-wrapper">
+						<div>
+							<mat-form-field class="select-field" floatLabel="never">
+								<mat-label>Hr</mat-label>
+								<mat-select [(ngModel)]="beginDateHours">
+									<mat-option [value]="hr" *ngFor="let hr of hours">{{hr}}</mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+						<div class="double-dot">:</div>
+						<div>
+							<mat-form-field class="select-field" floatLabel="never">
+								<mat-label>Min</mat-label>
+								<mat-select [(ngModel)]="beginDateMinutes">
+									<mat-option [value]="min" *ngFor="let min of minutes">{{min}}</mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="time-row">
+				<div>
+					To
+				</div>
+				<div class="time-row-infix">
+					<span>{{datepicker._endDate | date}}</span>
+					<div class="select-field-wrapper">
+						<div>
+							<mat-form-field class="select-field" floatLabel="never">
+								<mat-label>Hr</mat-label>
+								<mat-select [(ngModel)]="endDateHours">
+									<mat-option [value]="hr" *ngFor="let hr of hours">{{hr}}</mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+						<div class="double-dot">:</div>
+						<div>
+							<mat-form-field class="select-field" floatLabel="never" color="accent">
+								<mat-label>Min</mat-label>
+								<mat-select [(ngModel)]="endDateMinutes">
+									<mat-option [value]="min" *ngFor="let min of minutes">{{min}}</mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+			</div>
 
-      <div class="time-buttons-wrapper">
-        <button mat-raised-button color="primary" (click)="set()">
-          Set
-        </button>
-      </div>
-    </div>
-  </div>
+			<div class="time-buttons-wrapper">
+				<button mat-raised-button color="accent" (click)="set()" [disabled]="isSetButtonDisabled()">
+					Set
+				</button>
+			</div>
+		</div>
+	</div>
 </div>

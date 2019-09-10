@@ -14,7 +14,7 @@ export class AppComponent {
 
   constructor(fb: FormBuilder) {
     this.form = fb.group({
-      date: [{begin: new Date(2018, 7, 5), end: new Date(2018, 7, 25)}]
+      date: [{ begin: new Date(2018, 7, 5), end: new Date(2018, 7, 25) }]
     });
   }
 
@@ -22,4 +22,7 @@ export class AppComponent {
     this.inlineRange = $event;
   }
 
+  dateChangeTest(event) {
+    console.log('event', event);
+  }
 }

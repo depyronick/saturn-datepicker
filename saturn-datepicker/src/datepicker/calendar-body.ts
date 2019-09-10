@@ -7,16 +7,16 @@
  */
 
 import {
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  Output,
-  ViewEncapsulation,
-  NgZone,
-  OnChanges,
-  SimpleChanges,
+	ChangeDetectionStrategy,
+	Component,
+	ElementRef,
+	EventEmitter,
+	Input,
+	Output,
+	ViewEncapsulation,
+	NgZone,
+	OnChanges,
+	SimpleChanges,
 } from '@angular/core';
 import { take } from 'rxjs/operators';
 
@@ -30,11 +30,11 @@ export type SatCalendarCellCssClasses = string | string[] | Set<string> | { [key
  * @docs-private
  */
 export class SatCalendarCell {
-  constructor(public value: number,
-    public displayValue: string,
-    public ariaLabel: string,
-    public enabled: boolean,
-    public cssClasses?: SatCalendarCellCssClasses) { }
+	constructor(public value: number,
+		public displayValue: string,
+		public ariaLabel: string,
+		public enabled: boolean,
+		public cssClasses?: SatCalendarCellCssClasses) { }
 }
 
 
@@ -43,210 +43,210 @@ export class SatCalendarCell {
  * @docs-private
  */
 @Component({
-  moduleId: module.id,
-  selector: '[sat-calendar-body]',
-  templateUrl: 'calendar-body.html',
-  styleUrls: ['calendar-body.css'],
-  host: {
-    'class': 'mat-calendar-body',
-    'role': 'grid',
-    'aria-readonly': 'true'
-  },
-  exportAs: 'matCalendarBody',
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+	moduleId: module.id,
+	selector: '[sat-calendar-body]',
+	templateUrl: 'calendar-body.html',
+	styleUrls: ['calendar-body.css'],
+	host: {
+		'class': 'mat-calendar-body',
+		'role': 'grid',
+		'aria-readonly': 'true'
+	},
+	exportAs: 'matCalendarBody',
+	encapsulation: ViewEncapsulation.None,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SatCalendarBody implements OnChanges {
-  /** The label for the table. (e.g. "Jan 2017"). */
-  @Input() label: string;
+	/** The label for the table. (e.g. "Jan 2017"). */
+	@Input() label: string;
 
-  /** The cells to display in the table. */
-  @Input() rows: SatCalendarCell[][];
+	/** The cells to display in the table. */
+	@Input() rows: SatCalendarCell[][];
 
-  /** The value in the table that corresponds to today. */
-  @Input() todayValue: number;
+	/** The value in the table that corresponds to today. */
+	@Input() todayValue: number;
 
-  /** The value in the table that is currently selected. */
-  @Input() selectedValue: number;
+	/** The value in the table that is currently selected. */
+	@Input() selectedValue: number;
 
-  /** The value in the table since range of dates started.
-   * Null means no interval or interval doesn't start in this month
-   */
-  @Input() begin: number | null;
+	/** The value in the table since range of dates started.
+	 * Null means no interval or interval doesn't start in this month
+	 */
+	@Input() begin: number | null;
 
-  /** The value in the table representing end of dates range.
-   * Null means no interval or interval doesn't end in this month
-   */
-  @Input() end: number | null;
+	/** The value in the table representing end of dates range.
+	 * Null means no interval or interval doesn't end in this month
+	 */
+	@Input() end: number | null;
 
-  /** Whenever user already selected start of dates interval. */
-  @Input() beginSelected: boolean;
+	/** Whenever user already selected start of dates interval. */
+	@Input() beginSelected: boolean;
 
-  /** Whenever the current month is before the date already selected */
-  @Input() isBeforeSelected: boolean;
+	/** Whenever the current month is before the date already selected */
+	@Input() isBeforeSelected: boolean;
 
-  /** Whether to mark all dates as semi-selected. */
-  @Input() rangeFull: boolean;
+	/** Whether to mark all dates as semi-selected. */
+	@Input() rangeFull: boolean;
 
-  /** Whether to use date range selection behaviour.*/
-  @Input() rangeMode = false;
+	/** Whether to use date range selection behaviour.*/
+	@Input() rangeMode = false;
 
-  @Input() timeMode = false;
+	@Input() timeMode = false
 
-  /** The minimum number of free cells needed to fit the label in the first row. */
-  @Input() labelMinRequiredCells: number;
+	/** The minimum number of free cells needed to fit the label in the first row. */
+	@Input() labelMinRequiredCells: number;
 
-  /** The number of columns in the table. */
-  @Input() numCols = 7;
+	/** The number of columns in the table. */
+	@Input() numCols = 7;
 
-  /** The cell number of the active cell in the table. */
-  @Input() activeCell = 0;
+	/** The cell number of the active cell in the table. */
+	@Input() activeCell = 0;
 
-  /**
-   * The aspect ratio (width / height) to use for the cells in the table. This aspect ratio will be
-   * maintained even as the table resizes.
-   */
-  @Input() cellAspectRatio = 1;
+	/**
+	 * The aspect ratio (width / height) to use for the cells in the table. This aspect ratio will be
+	 * maintained even as the table resizes.
+	 */
+	@Input() cellAspectRatio = 1;
 
-  /** Emits when a new value is selected. */
-  @Output() readonly selectedValueChange: EventEmitter<number> = new EventEmitter<number>();
+	/** Emits when a new value is selected. */
+	@Output() readonly selectedValueChange: EventEmitter<number> = new EventEmitter<number>();
 
-  /** The number of blank cells to put at the beginning for the first row. */
-  _firstRowOffset: number;
+	/** The number of blank cells to put at the beginning for the first row. */
+	_firstRowOffset: number;
 
-  /** Padding for the individual date cells. */
-  _cellPadding: string;
+	/** Padding for the individual date cells. */
+	_cellPadding: string;
 
-  /** Width of an individual cell. */
-  _cellWidth: string;
+	/** Width of an individual cell. */
+	_cellWidth: string;
 
-  /** The cell number of the hovered cell */
-  _cellOver: number;
+	/** The cell number of the hovered cell */
+	_cellOver: number;
 
-  constructor(private _elementRef: ElementRef<HTMLElement>, private _ngZone: NgZone) { }
+	constructor(private _elementRef: ElementRef<HTMLElement>, private _ngZone: NgZone) { }
 
-  _cellClicked(cell: SatCalendarCell): void {
-    if (cell.enabled) {
-      this.selectedValueChange.emit(cell.value);
-    }
-  }
+	_cellClicked(cell: SatCalendarCell): void {
+		if (cell.enabled) {
+			this.selectedValueChange.emit(cell.value);
+		}
+	}
 
-  _mouseOverCell(cell: SatCalendarCell): void {
-    this._cellOver = cell.value;
-  }
+	_mouseOverCell(cell: SatCalendarCell): void {
+		this._cellOver = cell.value;
+	}
 
-  ngOnChanges(changes: SimpleChanges) {
-    const columnChanges = changes['numCols'];
-    const { rows, numCols } = this;
+	ngOnChanges(changes: SimpleChanges) {
+		const columnChanges = changes['numCols'];
+		const { rows, numCols } = this;
 
-    if (changes['rows'] || columnChanges) {
-      this._firstRowOffset = rows && rows.length && rows[0].length ? numCols - rows[0].length : 0;
-    }
+		if (changes['rows'] || columnChanges) {
+			this._firstRowOffset = rows && rows.length && rows[0].length ? numCols - rows[0].length : 0;
+		}
 
-    if (changes['cellAspectRatio'] || columnChanges || !this._cellPadding) {
-      this._cellPadding = `${50 * this.cellAspectRatio / numCols}%`;
-    }
+		if (changes['cellAspectRatio'] || columnChanges || !this._cellPadding) {
+			this._cellPadding = `${50 * this.cellAspectRatio / numCols}%`;
+		}
 
-    if (columnChanges || !this._cellWidth) {
-      this._cellWidth = `${100 / numCols}%`;
-    }
+		if (columnChanges || !this._cellWidth) {
+			this._cellWidth = `${100 / numCols}%`;
+		}
 
-    if (changes.activeCell) {
-      this._cellOver = this.activeCell + 1;
-    }
-  }
+		if (changes.activeCell) {
+			this._cellOver = this.activeCell + 1;
+		}
+	}
 
-  _isActiveCell(rowIndex: number, colIndex: number): boolean {
-    let cellNumber = rowIndex * this.numCols + colIndex;
+	_isActiveCell(rowIndex: number, colIndex: number): boolean {
+		let cellNumber = rowIndex * this.numCols + colIndex;
 
-    // Account for the fact that the first row may not have as many cells.
-    if (rowIndex) {
-      cellNumber -= this._firstRowOffset;
-    }
+		// Account for the fact that the first row may not have as many cells.
+		if (rowIndex) {
+			cellNumber -= this._firstRowOffset;
+		}
 
-    return cellNumber == this.activeCell;
-  }
+		return cellNumber == this.activeCell;
+	}
 
-  /** Whenever to mark cell as semi-selected (inside dates interval). */
-  _isSemiSelected(date: number) {
-    if (!this.rangeMode) {
-      return false;
-    }
-    if (this.rangeFull) {
-      return true;
-    }
-    /** Do not mark start and end of interval. */
-    if (date === this.begin || date === this.end) {
-      return false;
-    }
-    if (this.begin && !this.end) {
-      return date > this.begin;
-    }
-    if (this.end && !this.begin) {
-      return date < this.end;
-    }
-    return date > (<number>this.begin) && date < (<number>this.end);
-  }
+	/** Whenever to mark cell as semi-selected (inside dates interval). */
+	_isSemiSelected(date: number) {
+		if (!this.rangeMode) {
+			return false;
+		}
+		if (this.rangeFull) {
+			return true;
+		}
+		/** Do not mark start and end of interval. */
+		if (date === this.begin || date === this.end) {
+			return false;
+		}
+		if (this.begin && !this.end) {
+			return date > this.begin;
+		}
+		if (this.end && !this.begin) {
+			return date < this.end;
+		}
+		return date > (<number>this.begin) && date < (<number>this.end);
+	}
 
-  /** Whenever to mark cell as semi-selected before the second date is selected (between the begin cell and the hovered cell). */
-  _isBetweenOverAndBegin(date: number): boolean {
-    if (!this._cellOver || !this.rangeMode || !this.beginSelected) {
-      return false;
-    }
-    if (this.isBeforeSelected && !this.begin) {
-      return date > this._cellOver;
-    }
-    if (this._cellOver > this.begin) {
-      return date > this.begin && date < this._cellOver;
-    }
-    if (this._cellOver < this.begin) {
-      return date < this.begin && date > this._cellOver;
-    }
-    return false;
-  }
+	/** Whenever to mark cell as semi-selected before the second date is selected (between the begin cell and the hovered cell). */
+	_isBetweenOverAndBegin(date: number): boolean {
+		if (!this._cellOver || !this.rangeMode || !this.beginSelected) {
+			return false;
+		}
+		if (this.isBeforeSelected && !this.begin) {
+			return date > this._cellOver;
+		}
+		if (this._cellOver > this.begin) {
+			return date > this.begin && date < this._cellOver;
+		}
+		if (this._cellOver < this.begin) {
+			return date < this.begin && date > this._cellOver;
+		}
+		return false;
+	}
 
-  /** Whenever to mark cell as begin of the range. */
-  _isBegin(date: number): boolean {
-    if (this.rangeMode && this.beginSelected && this._cellOver) {
-      if (this.isBeforeSelected && !this.begin) {
-        return this._cellOver === date;
-      } else {
-        return (this.begin === date && !(this._cellOver < this.begin)) ||
-          (this._cellOver === date && this._cellOver < this.begin)
-      }
-    }
-    return this.begin === date;
-  }
+	/** Whenever to mark cell as begin of the range. */
+	_isBegin(date: number): boolean {
+		if (this.rangeMode && this.beginSelected && this._cellOver) {
+			if (this.isBeforeSelected && !this.begin) {
+				return this._cellOver === date;
+			} else {
+				return (this.begin === date && !(this._cellOver < this.begin)) ||
+					(this._cellOver === date && this._cellOver < this.begin)
+			}
+		}
+		return this.begin === date;
+	}
 
-  /** Whenever to mark cell as end of the range. */
-  _isEnd(date: number): boolean {
-    if (this.rangeMode && this.beginSelected && this._cellOver) {
-      if (this.isBeforeSelected && !this.begin) {
-        return false;
-      } else {
-        return (this.end === date && !(this._cellOver > this.begin)) ||
-          (this._cellOver === date && this._cellOver > this.begin)
-      }
-    }
-    return this.end === date;
-  }
+	/** Whenever to mark cell as end of the range. */
+	_isEnd(date: number): boolean {
+		if (this.rangeMode && this.beginSelected && this._cellOver) {
+			if (this.isBeforeSelected && !this.begin) {
+				return false;
+			} else {
+				return (this.end === date && !(this._cellOver > this.begin)) ||
+					(this._cellOver === date && this._cellOver > this.begin)
+			}
+		}
+		return this.end === date;
+	}
 
-  /** Focuses the active cell after the microtask queue is empty. */
-  _focusActiveCell() {
-    this._ngZone.runOutsideAngular(() => {
-      this._ngZone.onStable.asObservable().pipe(take(1)).subscribe(() => {
-        const activeCell: HTMLElement | null =
-          this._elementRef.nativeElement.querySelector('.mat-calendar-body-active');
+	/** Focuses the active cell after the microtask queue is empty. */
+	_focusActiveCell() {
+		this._ngZone.runOutsideAngular(() => {
+			this._ngZone.onStable.asObservable().pipe(take(1)).subscribe(() => {
+				const activeCell: HTMLElement | null =
+					this._elementRef.nativeElement.querySelector('.mat-calendar-body-active');
 
-        if (activeCell) {
-          activeCell.focus();
-        }
-      });
-    });
-  }
+				if (activeCell) {
+					activeCell.focus();
+				}
+			});
+		});
+	}
 
-  /** Whenever to highlight the target cell when selecting the second date in range mode */
-  _previewCellOver(date: number): boolean {
-    return this._cellOver === date && this.rangeMode && this.beginSelected;
-  }
+	/** Whenever to highlight the target cell when selecting the second date in range mode */
+	_previewCellOver(date: number): boolean {
+		return this._cellOver === date && this.rangeMode && this.beginSelected;
+	}
 }
