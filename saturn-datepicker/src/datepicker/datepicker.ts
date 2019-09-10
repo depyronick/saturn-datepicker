@@ -36,6 +36,7 @@ import {
 	ViewContainerRef,
 	ViewEncapsulation,
 	OnInit,
+	ChangeDetectorRef,
 } from '@angular/core';
 import {
 	CanColor,
@@ -131,7 +132,8 @@ export class SatDatepickerContent<D> extends _SatDatepickerContentMixinBase
 
 	constructor(
 		elementRef: ElementRef,
-		private dateAdapter: DateAdapter<D>
+		private dateAdapter: DateAdapter<D>,
+		private cdr: ChangeDetectorRef
 	) {
 		super(elementRef);
 	}
@@ -182,6 +184,26 @@ export class SatDatepickerContent<D> extends _SatDatepickerContentMixinBase
 
 	set() {
 		this.datepicker._handleSet(this.beginDateHours, this.beginDateMinutes, this.endDateHours, this.endDateMinutes);
+	}
+
+	handleEndDateHours(event) {
+		this.endDateHours = event.value;
+		this.cdr.detectChanges();
+	}
+
+	handleEndDateMinutes(event) {
+		this.endDateMinutes = event.value;
+		this.cdr.detectChanges();
+	}
+
+	handleBeginDateHours(event) {
+		this.beginDateHours = event.value;
+		this.cdr.detectChanges();
+	}
+
+	handleBeginDateMinutes(event) {
+		this.beginDateMinutes = event.value;
+		this.cdr.detectChanges();
 	}
 
 	setPreset(preset: string) {
@@ -542,8 +564,8 @@ export class SatDatepicker<D> implements OnDestroy, CanColor {
 
 	_handleSet(beginDateHours, beginDateMinutes, endDateHours, endDateMinutes) {
 		if (this._beginDate && this._endDate) {
-			const beginDate = moment(this._beginDate).hours(beginDateHours).minutes(beginDateMinutes).toDate();
-			const endDate = moment(this._endDate).hours(endDateHours).minutes(endDateMinutes).toDate();
+			const beginDate = moment(this._beginDate).hours(Number(beginDateHours)).minutes(Number(beginDateMinutes)).toDate();
+			const endDate = moment(this._endDate).hours(Number(endDateHours)).minutes(Number(endDateMinutes)).toDate();
 
 			const dates: SatDatepickerRangeValue<D> = {
 				begin: this._dateAdapter.deserialize(beginDate),

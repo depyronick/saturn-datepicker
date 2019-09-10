@@ -32,18 +32,19 @@
 					<span>{{datepicker._beginDate | date}}</span>
 					<div class="select-field-wrapper">
 						<div>
-							<mat-form-field class="select-field" floatLabel="never">
+							<mat-form-field class="select-field" floatLabel="never" color="primary">
 								<mat-label>Hr</mat-label>
-								<mat-select [(ngModel)]="beginDateHours">
+								<mat-select (selectionChange)="handleBeginDateHours($event)" [value]="beginDateHours">
 									<mat-option [value]="hr" *ngFor="let hr of hours">{{hr}}</mat-option>
 								</mat-select>
 							</mat-form-field>
 						</div>
 						<div class="double-dot">:</div>
 						<div>
-							<mat-form-field class="select-field" floatLabel="never">
+							<mat-form-field class="select-field" floatLabel="never" color="primary">
 								<mat-label>Min</mat-label>
-								<mat-select [(ngModel)]="beginDateMinutes">
+								<mat-select (selectionChange)="handleBeginDateMinutes($event)"
+									[value]="beginDateMinutes">
 									<mat-option [value]="min" *ngFor="let min of minutes">{{min}}</mat-option>
 								</mat-select>
 							</mat-form-field>
@@ -59,18 +60,18 @@
 					<span>{{datepicker._endDate | date}}</span>
 					<div class="select-field-wrapper">
 						<div>
-							<mat-form-field class="select-field" floatLabel="never">
+							<mat-form-field class="select-field" floatLabel="never" color="primary">
 								<mat-label>Hr</mat-label>
-								<mat-select [(ngModel)]="endDateHours">
+								<mat-select (selectionChange)="handleEndDateHours($event)" [value]="endDateHours">
 									<mat-option [value]="hr" *ngFor="let hr of hours">{{hr}}</mat-option>
 								</mat-select>
 							</mat-form-field>
 						</div>
 						<div class="double-dot">:</div>
 						<div>
-							<mat-form-field class="select-field" floatLabel="never" color="accent">
+							<mat-form-field class="select-field" floatLabel="never" color="primary">
 								<mat-label>Min</mat-label>
-								<mat-select [(ngModel)]="endDateMinutes">
+								<mat-select (selectionChange)="handleEndDateMinutes($event)" [value]="endDateMinutes">
 									<mat-option [value]="min" *ngFor="let min of minutes">{{min}}</mat-option>
 								</mat-select>
 							</mat-form-field>
