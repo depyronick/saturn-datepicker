@@ -9,6 +9,7 @@
     "outDir": "../out-tsc/app",
     "module": "es2015",
     "baseUrl": "",
+    "allowSyntheticDefaultImports": true,
     "types": [],
     "paths": {
       "saturn-datepicker": [ "../saturn-datepicker/src/public_api.ts" ]
