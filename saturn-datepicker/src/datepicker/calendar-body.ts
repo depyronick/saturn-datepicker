@@ -91,6 +91,8 @@ export class SatCalendarBody implements OnChanges {
   /** Whether to use date range selection behaviour.*/
   @Input() rangeMode = false;
 
+  @Input() timeMode = false;
+
   /** The minimum number of free cells needed to fit the label in the first row. */
   @Input() labelMinRequiredCells: number;
 

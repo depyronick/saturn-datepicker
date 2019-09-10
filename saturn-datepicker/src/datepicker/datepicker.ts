@@ -141,13 +141,13 @@ export class SatDatepickerContent<D> extends _SatDatepickerContentMixinBase
     this.hours = this.getHours();
     this.minutes = this.getMinutes();
 
-    if (this.datepicker.timeSelectionMode) {
+    if (this.datepicker.timeMode) {
       this.datepicker.closeAfterSelection = false;
     }
   }
 
   close() {
-    if (this.datepicker.closeAfterSelection && !this.datepicker.timeSelectionMode) {
+    if (this.datepicker.closeAfterSelection && !this.datepicker.timeMode) {
       this.datepicker.close();
     }
   }
@@ -293,13 +293,13 @@ export class SatDatepicker<D> implements OnDestroy, CanColor {
   }
 
   /** */
-  private _timeSelectionMode;
+  private _timeMode;
   @Input()
-  get timeSelectionMode(): boolean {
-    return this._timeSelectionMode;
+  get timeMode(): boolean {
+    return this._timeMode;
   }
-  set timeSelectionMode(mode: boolean) {
-    this._timeSelectionMode = mode;
+  set timeMode(mode: boolean) {
+    this._timeMode = mode;
   }
 
   /** */
