@@ -182,8 +182,15 @@ export class SatDatepickerContent<D> extends _SatDatepickerContentMixinBase
 
   set() {
     this._calendar.activeDate = this._calendar.beginDate;
-    this._calendar.beginDateSelectedChange.emit(this._calendar.beginDate);
-    this._calendar.dateRangesChange.emit({ begin: this._calendar.beginDate, end: this._calendar.endDate });
+
+    const beginDate = moment(this._calendar.beginDate).hours(Number(this.beginDateHours)).minutes(Number(this.beginDateMinutes)).toDate();
+    const endDate = moment(this._calendar.endDate).hours(Number(this.endDateHours)).minutes(Number(this.endDateMinutes)).toDate();
+
+    this._calendar.beginDateSelectedChange.emit(this.dateAdapter.deserialize(beginDate));
+    this._calendar.dateRangesChange.emit({
+      begin: this.dateAdapter.deserialize(beginDate),
+      end: this.dateAdapter.deserialize(endDate)
+    });
 
     this.datepicker.close();
   }
