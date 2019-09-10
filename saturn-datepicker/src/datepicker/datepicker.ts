@@ -144,10 +144,6 @@ export class SatDatepickerContent<D> extends _SatDatepickerContentMixinBase
 		this._calendar.focusActiveCell();
 		this.hours = this.getHours();
 		this.minutes = this.getMinutes();
-
-		if (this.datepicker.timeMode) {
-			this.datepicker.closeAfterSelection = false;
-		}
 	}
 
 	close() {
@@ -185,18 +181,7 @@ export class SatDatepickerContent<D> extends _SatDatepickerContentMixinBase
 	}
 
 	set() {
-		this._calendar.activeDate = this._calendar.beginDate;
-
-		const beginDate = moment(this._calendar.beginDate).hours(Number(this.beginDateHours)).minutes(Number(this.beginDateMinutes)).toDate();
-		const endDate = moment(this._calendar.endDate).hours(Number(this.endDateHours)).minutes(Number(this.endDateMinutes)).toDate();
-
-		this._calendar.beginDateSelectedChange.emit(this.dateAdapter.deserialize(beginDate));
-		this._calendar.dateRangesChange.emit({
-			begin: this.dateAdapter.deserialize(beginDate),
-			end: this.dateAdapter.deserialize(endDate)
-		});
-
-		this.datepicker.close();
+		this.datepicker._handleSet(this.beginDateHours, this.beginDateMinutes, this.endDateHours, this.endDateMinutes);
 	}
 
 	setPreset(preset: string) {
@@ -537,11 +522,30 @@ export class SatDatepicker<D> implements OnDestroy, CanColor {
 		this._beginDateSelected = null;
 		if (!this._dateAdapter.sameDate(dates.begin, this.beginDate) ||
 			!this._dateAdapter.sameDate(dates.end, this.endDate)) {
-			this._selectedChanged.next(dates);
+			if (!this.timeMode) {
+				this._selectedChanged.next(dates);
+			}
 		}
 		this._beginDate = dates.begin;
 		this._endDate = dates.end;
 	}
+
+	_handleSet(beginDateHours, beginDateMinutes, endDateHours, endDateMinutes) {
+		if (this._beginDate && this._endDate) {
+			const beginDate = moment(this._beginDate).hours(beginDateHours).minutes(beginDateMinutes).toDate();
+			const endDate = moment(this._endDate).hours(endDateHours).minutes(endDateMinutes).toDate();
+
+			const dates: SatDatepickerRangeValue<D> = {
+				begin: this._dateAdapter.deserialize(beginDate),
+				end: this._dateAdapter.deserialize(endDate)
+			};
+
+			this._selectedChanged.next(dates);
+
+			this.close();
+		}
+	}
+
 	/** Emits the selected year in multiyear view */
 	_selectYear(normalizedYear: D): void {
 		this.yearSelected.emit(normalizedYear);
