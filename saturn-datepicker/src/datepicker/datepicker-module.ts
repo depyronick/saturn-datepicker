@@ -26,12 +26,18 @@ import {SatDatepickerToggle, SatDatepickerToggleIcon} from './datepicker-toggle'
 import {SatMonthView} from './month-view';
 import {SatMultiYearView} from './multi-year-view';
 import {SatYearView} from './year-view';
+import { MatSelectModule, MatOptionModule } from '@angular/material';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
   imports: [
     CommonModule,
     MatButtonModule,
+    MatSelectModule,
+    MatOptionModule,
+    FormsModule,
+    ReactiveFormsModule,
     MatDialogModule,
     OverlayModule,
     A11yModule,

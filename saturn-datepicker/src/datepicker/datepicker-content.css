@@ -5,7 +5,7 @@
 
 .mat-datepicker-content .mat-calendar {
   width: 296px;
-  height: 354px
+  height: 350px
 }
 
 .mat-datepicker-content-touch {
@@ -60,8 +60,8 @@
 
 .preset-buttons button {
   margin-bottom: 4.6px;
-    text-align: left;
-    font-weight: 400;
+  text-align: left;
+  font-weight: 400;
 }
 
 .preset-buttons:last-child {

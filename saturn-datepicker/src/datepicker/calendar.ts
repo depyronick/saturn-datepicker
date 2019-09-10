@@ -184,6 +184,7 @@ export class SatCalendarHeader<D> {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SatCalendarFooter<D> {
+
 }
 
 /**
@@ -222,6 +223,8 @@ export class SatCalendar<D> implements AfterContentInit, AfterViewChecked, OnDes
 
   /** Whenever datepicker is for selecting range of dates. */
   @Input() rangeMode = false;
+
+  @Input() timeSelectionMode = false;
 
   /** Enables datepicker closing after selection */
   @Input() closeAfterSelection = true;
@@ -328,6 +331,8 @@ export class SatCalendar<D> implements AfterContentInit, AfterViewChecked, OnDes
   /** Reference to the current multi-year view component. */
   @ViewChild(SatMultiYearView) multiYearView: SatMultiYearView<D>;
 
+
+
   /**
    * The current active date. This determines which time period is shown and which date is
    * highlighted when using keyboard navigation.
@@ -372,6 +377,8 @@ export class SatCalendar<D> implements AfterContentInit, AfterViewChecked, OnDes
       this.stateChanges.next();
     });
   }
+
+
 
   ngAfterContentInit() {
     this._calendarHeaderPortal = new ComponentPortal(this.headerComponent || SatCalendarHeader);

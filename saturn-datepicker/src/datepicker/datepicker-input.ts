@@ -119,6 +119,8 @@ export class SatDatepickerInput<D> implements ControlValueAccessor, OnDestroy, V
       this.dateInput.emit(new SatDatepickerInputEvent(this, this._elementRef.nativeElement));
       this.dateChange.emit(new SatDatepickerInputEvent(this, this._elementRef.nativeElement));
     });
+
+
   }
   _datepicker: SatDatepicker<D>;
 

@@ -35,6 +35,7 @@ import {
   ViewChild,
   ViewContainerRef,
   ViewEncapsulation,
+  OnInit,
 } from '@angular/core';
 import {
   CanColor,
@@ -52,7 +53,7 @@ import { SatCalendarCellCssClasses } from './calendar-body';
 import { SatDatepickerInput, SatDatepickerRangeValue } from './datepicker-input';
 import { DateAdapter } from '../datetime/date-adapter';
 
-const moment = require('moment');
+import * as moment from 'moment';
 
 /** Used to generate a unique ID for each datepicker instance. */
 let datepickerUid = 0;
@@ -119,6 +120,14 @@ export class SatDatepickerContent<D> extends _SatDatepickerContentMixinBase
   /** Whether the datepicker is above or below the input. */
   _isAbove: boolean;
 
+  public beginDateHours = '00';
+  public beginDateMinutes = '00';
+  public endDateHours = '23';
+  public endDateMinutes = '59';
+
+  public hours;
+  public minutes;
+
   constructor(
     elementRef: ElementRef,
     private dateAdapter: DateAdapter<D>
@@ -126,14 +135,57 @@ export class SatDatepickerContent<D> extends _SatDatepickerContentMixinBase
     super(elementRef);
   }
 
+
   ngAfterViewInit() {
     this._calendar.focusActiveCell();
+    this.hours = this.getHours();
+    this.minutes = this.getMinutes();
+
+    if (this.datepicker.timeSelectionMode) {
+      this.datepicker.closeAfterSelection = false;
+    }
   }
 
   close() {
-    if (this.datepicker.closeAfterSelection) {
+    if (this.datepicker.closeAfterSelection && !this.datepicker.timeSelectionMode) {
       this.datepicker.close();
     }
+  }
+
+  getHours() {
+    const arr = [];
+
+    for (let i = 0; i < 24; i++) {
+      if (i < 10) {
+        arr.push("0" + i);
+      } else {
+        arr.push(i.toString());
+      }
+    }
+
+    return arr;
+  }
+
+  getMinutes() {
+    const arr = [];
+
+    for (let i = 0; i < 60; i++) {
+      if (i < 10) {
+        arr.push("0" + i);
+      } else {
+        arr.push(i.toString());
+      }
+    }
+
+    return arr;
+  }
+
+  set() {
+    this._calendar.activeDate = this._calendar.beginDate;
+    this._calendar.beginDateSelectedChange.emit(this._calendar.beginDate);
+    this._calendar.dateRangesChange.emit({ begin: this._calendar.beginDate, end: this._calendar.endDate });
+
+    this.datepicker.close();
   }
 
   setPreset(preset: string) {
@@ -158,6 +210,13 @@ export class SatDatepickerContent<D> extends _SatDatepickerContentMixinBase
 
         this._calendar.beginDate = this.dateAdapter.deserialize(twoDays);
         this._calendar.endDate = this.dateAdapter.deserialize(twoDaysEnd);
+        break;
+      case 'three_days':
+        const threeDays = moment().subtract('3', 'days').hours(0).minutes(0).seconds(0).toDate();
+        const threeDaysEnd = moment().subtract('3', 'days').hours(23).minutes(59).seconds(59).toDate();
+
+        this._calendar.beginDate = this.dateAdapter.deserialize(threeDays);
+        this._calendar.endDate = this.dateAdapter.deserialize(threeDaysEnd);
         break;
       case 'this_week':
         const startOfWeek = moment().startOf('week').hours(0).minutes(0).seconds(0).toDate();
@@ -212,6 +271,7 @@ export class SatDatepickerContent<D> extends _SatDatepickerContentMixinBase
 })
 export class SatDatepicker<D> implements OnDestroy, CanColor {
   /** Whenever datepicker is for selecting range of dates. */
+  private _rangeMode;
   @Input()
   get rangeMode(): boolean {
     return this._rangeMode;
@@ -224,8 +284,18 @@ export class SatDatepicker<D> implements OnDestroy, CanColor {
       this._beginDate = this._endDate = null;
     }
   }
-  private _rangeMode;
 
+  /** */
+  private _timeSelectionMode;
+  @Input()
+  get timeSelectionMode(): boolean {
+    return this._timeSelectionMode;
+  }
+  set timeSelectionMode(mode: boolean) {
+    this._timeSelectionMode = mode;
+  }
+
+  /** */
   @Input()
   get showPresets(): boolean {
     return this._showPresets;
@@ -412,6 +482,8 @@ export class SatDatepicker<D> implements OnDestroy, CanColor {
 
   /** The date already selected by the user in range mode. */
   private _beginDateSelected: D | null;
+
+
 
   constructor(private _dialog: MatDialog,
     private _overlay: Overlay,

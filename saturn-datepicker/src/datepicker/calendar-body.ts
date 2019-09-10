@@ -18,12 +18,12 @@ import {
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
-import {take} from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 /**
  * Extra CSS classes that can be associated with a calendar cell.
  */
-export type SatCalendarCellCssClasses = string | string[] | Set<string> | {[key: string]: any};
+export type SatCalendarCellCssClasses = string | string[] | Set<string> | { [key: string]: any };
 
 /**
  * An internal class that represents the data corresponding to a single calendar cell.
@@ -31,10 +31,10 @@ export type SatCalendarCellCssClasses = string | string[] | Set<string> | {[key:
  */
 export class SatCalendarCell {
   constructor(public value: number,
-              public displayValue: string,
-              public ariaLabel: string,
-              public enabled: boolean,
-              public cssClasses?: SatCalendarCellCssClasses) {}
+    public displayValue: string,
+    public ariaLabel: string,
+    public enabled: boolean,
+    public cssClasses?: SatCalendarCellCssClasses) { }
 }
 
 
@@ -72,12 +72,12 @@ export class SatCalendarBody implements OnChanges {
   /** The value in the table since range of dates started.
    * Null means no interval or interval doesn't start in this month
    */
-  @Input() begin: number|null;
+  @Input() begin: number | null;
 
   /** The value in the table representing end of dates range.
    * Null means no interval or interval doesn't end in this month
    */
-  @Input() end: number|null;
+  @Input() end: number | null;
 
   /** Whenever user already selected start of dates interval. */
   @Input() beginSelected: boolean;
@@ -135,7 +135,7 @@ export class SatCalendarBody implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     const columnChanges = changes['numCols'];
-    const {rows, numCols} = this;
+    const { rows, numCols } = this;
 
     if (changes['rows'] || columnChanges) {
       this._firstRowOffset = rows && rows.length && rows[0].length ? numCols - rows[0].length : 0;
@@ -183,7 +183,7 @@ export class SatCalendarBody implements OnChanges {
     if (this.end && !this.begin) {
       return date < this.end;
     }
-    return date > <number>this.begin && date < <number>this.end;
+    return date > (<number>this.begin) && date < (<number>this.end);
   }
 
   /** Whenever to mark cell as semi-selected before the second date is selected (between the begin cell and the hovered cell). */
@@ -234,7 +234,7 @@ export class SatCalendarBody implements OnChanges {
     this._ngZone.runOutsideAngular(() => {
       this._ngZone.onStable.asObservable().pipe(take(1)).subscribe(() => {
         const activeCell: HTMLElement | null =
-            this._elementRef.nativeElement.querySelector('.mat-calendar-body-active');
+          this._elementRef.nativeElement.querySelector('.mat-calendar-body-active');
 
         if (activeCell) {
           activeCell.focus();
