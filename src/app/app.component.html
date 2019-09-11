@@ -49,7 +49,7 @@
       automatically disabled.
     </div>
     <mat-form-field>
-      <input matInput placeholder="Choose a date" (dateChange)="dateChangeTest($event)" [satDatepicker]="timeSelection" formControlName="date">
+      <input matInput placeholder="Choose a date" (dateSet)="dateChangeTest($event)" [satDatepicker]="timeSelection" formControlName="date">
       <sat-datepicker #timeSelection [rangeMode]="true" [showPresets]="true" [timeMode]="true">
       </sat-datepicker>
       <sat-datepicker-toggle matSuffix [for]="timeSelection"></sat-datepicker-toggle>

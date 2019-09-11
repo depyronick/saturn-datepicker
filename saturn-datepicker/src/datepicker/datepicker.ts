@@ -183,28 +183,28 @@ export class SatDatepickerContent<D> extends _SatDatepickerContentMixinBase
 	}
 
 	set() {
-		this.datepicker._handleSet(this.beginDateHours, this.beginDateMinutes, this.endDateHours, this.endDateMinutes);
+		this.datepicker._handleSet(this.datepicker.beginHrMin, this.datepicker.endHrMin);
 	}
 
-	handleEndDateHours(event) {
-		this.endDateHours = event.value;
-		this.cdr.detectChanges();
-	}
+	// handleEndDateHours(event) {
+	// 	this.endDateHours = event.value;
+	// 	this.cdr.detectChanges();
+	// }
 
-	handleEndDateMinutes(event) {
-		this.endDateMinutes = event.value;
-		this.cdr.detectChanges();
-	}
+	// handleEndDateMinutes(event) {
+	// 	this.endDateMinutes = event.value;
+	// 	this.cdr.detectChanges();
+	// }
 
-	handleBeginDateHours(event) {
-		this.beginDateHours = event.value;
-		this.cdr.detectChanges();
-	}
+	// handleBeginDateHours(event) {
+	// 	this.beginDateHours = event.value;
+	// 	this.cdr.detectChanges();
+	// }
 
-	handleBeginDateMinutes(event) {
-		this.beginDateMinutes = event.value;
-		this.cdr.detectChanges();
-	}
+	// handleBeginDateMinutes(event) {
+	// 	this.beginDateMinutes = event.value;
+	// 	this.cdr.detectChanges();
+	// }
 
 	setPreset(preset: string) {
 		switch (preset) {
@@ -266,16 +266,14 @@ export class SatDatepickerContent<D> extends _SatDatepickerContentMixinBase
 				break;
 		}
 
-		if (this._calendar.beginDate && this._calendar.endDate) {
-			const dates: SatDatepickerRangeValue<D> = {
-				begin: this.dateAdapter.deserialize(this._calendar.beginDate),
-				end: this.dateAdapter.deserialize(this._calendar.endDate)
-			};
+		const dates: SatDatepickerRangeValue<D> = {
+			begin: this.dateAdapter.deserialize(this._calendar.beginDate),
+			end: this.dateAdapter.deserialize(this._calendar.endDate)
+		};
 
-			this.datepicker._selectedChanged.next(dates);
+		this.datepicker._selectedChanged.next(dates);
 
-			this.datepicker.close();
-		}
+		this.datepicker.close();
 	}
 }
 
@@ -293,6 +291,30 @@ export class SatDatepickerContent<D> extends _SatDatepickerContentMixinBase
 	encapsulation: ViewEncapsulation.None,
 })
 export class SatDatepicker<D> implements OnDestroy, CanColor {
+	private _beginHrMin = {
+		hr: '00',
+		min: '00'
+	}
+	@Input()
+	get beginHrMin(): { hr: string, min: string } {
+		return this._beginHrMin;
+	}
+	set beginHrMin(value: { hr: string, min: string }) {
+		this._beginHrMin = value;
+	}
+
+	private _endHrMin = {
+		hr: '23',
+		min: '59'
+	}
+	@Input()
+	get endHrMin(): { hr: string, min: string } {
+		return this._endHrMin;
+	}
+	set endHrMin(value: { hr: string, min: string }) {
+		this._endHrMin = value;
+	}
+
 	/** Whenever datepicker is for selecting range of dates. */
 	private _rangeMode;
 	@Input()
@@ -316,11 +338,6 @@ export class SatDatepicker<D> implements OnDestroy, CanColor {
 	}
 	set timeMode(mode: boolean) {
 		this._timeMode = mode;
-		if (this.rangeMode) {
-			this._validSelected = null;
-		} else {
-			this._beginDate = this._endDate = null;
-		}
 	}
 
 	/** */
@@ -562,15 +579,18 @@ export class SatDatepicker<D> implements OnDestroy, CanColor {
 		this._endDate = dates.end;
 	}
 
-	_handleSet(beginDateHours, beginDateMinutes, endDateHours, endDateMinutes) {
-		if (this._beginDate && this._endDate) {
-			const beginDate = moment(this._beginDate).hours(Number(beginDateHours)).minutes(Number(beginDateMinutes)).toDate();
-			const endDate = moment(this._endDate).hours(Number(endDateHours)).minutes(Number(endDateMinutes)).toDate();
+	_handleSet(beginHrMin: { hr: string, min: string }, endHrMin: { hr: string, min: string }) {
+		if (this._beginDate && this._endDate && beginHrMin && endHrMin) {
+			const beginDate = moment(this._beginDate).hours(Number(beginHrMin.hr)).minutes(Number(beginHrMin.min)).toDate();
+			const endDate = moment(this._endDate).hours(Number(endHrMin.hr)).minutes(Number(endHrMin.min)).toDate();
 
 			const dates: SatDatepickerRangeValue<D> = {
 				begin: this._dateAdapter.deserialize(beginDate),
 				end: this._dateAdapter.deserialize(endDate)
 			};
+
+			this._beginDate = dates.begin;
+			this._endDate = dates.end;
 
 			this._selectedChanged.next(dates);
 

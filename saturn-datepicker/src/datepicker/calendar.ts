@@ -204,6 +204,29 @@ export class SatCalendarFooter<D> {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SatCalendar<D> implements AfterContentInit, AfterViewChecked, OnDestroy, OnChanges {
+	private _beginHrMin = {
+		hr: '00',
+		min: '00'
+	}
+	@Input()
+	get beginHrMin(): { hr: string, min: string } {
+		return this._beginHrMin;
+	}
+	set beginHrMin(value: { hr: string, min: string }) {
+		this._beginHrMin = value;
+	}
+
+	private _endHrMin = {
+		hr: '23',
+		min: '59'
+	}
+	@Input()
+	get endHrMin(): { hr: string, min: string } {
+		return this._endHrMin;
+	}
+	set endHrMin(value: { hr: string, min: string }) {
+		this._endHrMin = value;
+	}
 
 	/** Beginning of date range. */
 	@Input()
